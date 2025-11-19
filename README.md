@@ -6,7 +6,7 @@ Minimal React i18n helper optimized for statically exported Next.js (App Router)
 
 ```tsx
 // app/[locale]/layout.tsx (Next.js App Router)
-import { TranslationProvider } from '@your-company/react-static-i18n';
+import { TranslationProvider } from 'next-static-intl';
 import en from '../../locales/en.json';
 import it from '../../locales/it.json';
 
@@ -20,3 +20,12 @@ export default function LocaleLayout({ children, params }) {
     </TranslationProvider>
   );
 }
+
+// component
+import { useTranslations } from 'next-static-intl';
+
+export default function Home() {
+  const {t} = useTranslations();
+  return <h1>{t('home.title')}</h1>;
+}
+```
