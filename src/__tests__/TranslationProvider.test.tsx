@@ -13,6 +13,15 @@ const TestComponent: React.FC = () => {
     )
 }
 
+const NoTranslationTestComponent: React.FC = () => {
+    const { t } = useTranslations()
+    return (
+        <div>
+            <p data-testid="noTranslation">{t('foo.baz')}</p>
+        </div>
+    )
+}
+
 describe('TranslationProvider', () => {
     const messages = {
         hello: 'Hello',
@@ -37,5 +46,15 @@ describe('TranslationProvider', () => {
         )
 
         expect(screen.getByTestId('nested')).toHaveTextContent('Home Title')
+    })
+
+    it('returns translation key when no match is found in the messages object', () => {
+        render(
+            <TranslationProvider locale="en" messages={messages}>
+                <NoTranslationTestComponent />
+            </TranslationProvider>
+        )
+
+        expect(screen.getByTestId('noTranslation')).toHaveTextContent('foo.baz')
     })
 })
