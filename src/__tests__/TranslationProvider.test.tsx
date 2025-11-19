@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { TranslationProvider } from '../TranslationProvider'
 import { useTranslations } from '../useTranslations'
+import { a } from 'vitest/dist/chunks/suite.d.BJWk38HB'
 
 const TestComponent: React.FC = () => {
     const { t } = useTranslations()
@@ -22,10 +23,20 @@ const NoTranslationTestComponent: React.FC = () => {
     )
 }
 
+const InterpolationTestComponent: React.FC = () => {
+    const { t } = useTranslations()
+    return (
+        <div>
+            <p data-testid="interpolated">{t('greeting', { name: 'John' })}</p>
+        </div>
+    )
+}
+
 describe('TranslationProvider', () => {
     const messages = {
         hello: 'Hello',
         home: { title: 'Home Title' },
+        greeting: 'greetings, {name}',
     }
 
     it('returns simple translations', () => {
@@ -56,5 +67,47 @@ describe('TranslationProvider', () => {
         )
 
         expect(screen.getByTestId('noTranslation')).toHaveTextContent('foo.baz')
+    })
+
+    it('interpolates provided words with the translated string', () => {
+        render(
+            <TranslationProvider locale="en" messages={messages}>
+                <InterpolationTestComponent />
+            </TranslationProvider>
+        )
+
+        expect(screen.getByTestId('interpolated')).toHaveTextContent(
+            'greetings, John'
+        )
+    })
+
+    it('handles multiple interpolations correctly', () => {
+        const multiInterpolationMessages = {
+            farewell: 'Goodbye, {name}. See you on {day}.',
+        }
+
+        const MultiInterpolationTestComponent: React.FC = () => {
+            const { t } = useTranslations()
+            return (
+                <div>
+                    <p data-testid="multiInterpolated">
+                        {t('farewell', { name: 'Alice', day: 'Monday' })}
+                    </p>
+                </div>
+            )
+        }
+
+        render(
+            <TranslationProvider
+                locale="en"
+                messages={multiInterpolationMessages}
+            >
+                <MultiInterpolationTestComponent />
+            </TranslationProvider>
+        )
+
+        expect(screen.getByTestId('multiInterpolated')).toHaveTextContent(
+            'Goodbye, Alice. See you on Monday.'
+        )
     })
 })
