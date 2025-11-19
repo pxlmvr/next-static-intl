@@ -1,0 +1,58 @@
+{
+  "name": "next-static-intl",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Small React i18n library optimized for statically exported Next.js App Router sites",
+  "main": "dist/next-static-intl.cjs.js",
+  "module": "dist/next-static-intl.es.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/next-static-intl.es.js",
+      "require": "./dist/next-static-intl.cjs.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run typecheck",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "vitest"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^5.1.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "prettier": "3.6.2",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.3",
+    "vite": "^7.2.2",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^4.0.10"
+  },
+  "keywords": [
+    "i18n",
+    "react",
+    "nextjs",
+    "static",
+    "app-router"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pxlmvr/next-static-intl.git"
+  },
+  "author": "Matteo Losi",
+  "license": "MIT"
+}
