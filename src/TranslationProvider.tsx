@@ -14,31 +14,28 @@ export const TranslationProvider: React.FC<Props> = ({
 }) => {
     const t = (key: string, params?: Record<string, string>): string => {
         const parts = key.split('.')
-
-        let result: string | Messages = messages
+        let value: string | Messages = messages
 
         for (const part of parts) {
-            if (
-                typeof result === 'object' &&
-                result !== null &&
-                part in result
-            ) {
-                result = result[part]
+            if (typeof value === 'object' && value !== null && part in value) {
+                value = value[part]
             } else {
                 return key
             }
         }
 
-        // FIXME: handle multiple interpolations correctly
-        if (typeof result === 'string' && params) {
-            const tempResult: string = result // this is necessary because in the forEach loop result is no longer narrowed to string
-            Object.keys(params).forEach((paramKey) => {
-                const regex = new RegExp(`{${paramKey}}`, 'g')
-                result = tempResult.replace(regex, params[paramKey])
-            })
+        if (typeof value !== 'string') return key
+
+        if (params) {
+            let final = value
+            for (const [name, paramValue] of Object.entries(params)) {
+                const regex = new RegExp(`{${name}}`, 'g')
+                final = final.replace(regex, paramValue)
+            }
+            return final
         }
 
-        return typeof result === 'string' ? result : key
+        return value
     }
 
     return (

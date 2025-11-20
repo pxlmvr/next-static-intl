@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { TranslationProvider } from '../TranslationProvider'
 import { useTranslations } from '../useTranslations'
-import { a } from 'vitest/dist/chunks/suite.d.BJWk38HB'
 
 const TestComponent: React.FC = () => {
     const { t } = useTranslations()
