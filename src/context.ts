@@ -1,10 +1,11 @@
 import React from 'react'
 import { Locale, Messages } from './types'
+import { TFunction } from './createT'
 
 export type TranslationContextType = {
     locale: Locale
     messages: Messages
-    t: (key: string, params?: Record<string, string>) => string
+    t: TFunction
 }
 
 export const TranslationContext =

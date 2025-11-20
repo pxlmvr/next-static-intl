@@ -31,6 +31,20 @@ const InterpolationTestComponent: React.FC = () => {
     )
 }
 
+const RichInterpolationTestComponent: React.FC = () => {
+    const { t } = useTranslations()
+
+    return (
+        <div>
+            <p data-testid="richInterpolated">
+                {t.rich('message', {
+                    bold: (chunks) => <strong>{chunks}</strong>,
+                })}
+            </p>
+        </div>
+    )
+}
+
 describe('TranslationProvider', () => {
     const messages = {
         hello: 'Hello',
@@ -108,5 +122,26 @@ describe('TranslationProvider', () => {
         expect(screen.getByTestId('multiInterpolated')).toHaveTextContent(
             'Goodbye, Alice. See you on Monday.'
         )
+    })
+
+    it('handles rich interpolation', () => {
+        const RichInterpolationMessages = {
+            message: 'This is a <bold>bold</bold> statement.',
+        }
+
+        render(
+            <TranslationProvider
+                locale="en"
+                messages={RichInterpolationMessages}
+            >
+                <RichInterpolationTestComponent />
+            </TranslationProvider>
+        )
+
+        const richInterpolated = screen.getByTestId('richInterpolated')
+        expect(richInterpolated).toContainHTML(
+            'This is a <strong>bold</strong> statement.'
+        )
+        expect(richInterpolated).toHaveTextContent('This is a bold statement.')
     })
 })

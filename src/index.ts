@@ -1,5 +1,4 @@
-// Public entry file
-
-export * from './TranslationProvider'
-export * from './useTranslations'
+export { createT } from './createT'
+export { TranslationProvider } from './TranslationProvider'
+export { useTranslations } from './useTranslations'
 export * from './types'
