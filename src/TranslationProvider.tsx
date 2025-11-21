@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useMemo } from 'react'
 import { TranslationContext } from './context'
 import { Messages } from './types'

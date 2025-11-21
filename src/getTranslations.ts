@@ -1,6 +1,6 @@
 import { createT } from './createT'
 import { Messages } from './types'
 
-export const getTranslations = (messages: Messages) => {
+export function getTranslations(locale: string, messages: Messages) {
     return createT(messages)
 }
