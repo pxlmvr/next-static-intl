@@ -1,23 +1,24 @@
 {
     "name": "next-static-intl",
-    "private": true,
     "version": "0.1.0",
     "type": "module",
-    "description": "Small React i18n library optimized for statically exported Next.js App Router sites",
     "main": "./dist/next-static-intl.cjs.js",
     "module": "./dist/next-static-intl.es.js",
-    "types": "dist/types/index.d.ts",
+    "types": "./dist/types/index.d.ts",
+    "description": "Small React i18n library optimized for statically exported Next.js App Router sites",
     "files": [
         "dist"
     ],
     "exports": {
         ".": {
+            "types": "./dist/types/index.d.ts",
             "import": "./dist/next-static-intl.es.js",
-            "require": "./dist/next-static-intl.cjs.js"
+            "require": "./dist/next-static-intl.cjs.js",
+            "default": "./dist/next-static-intl.es.js"
         }
     },
     "scripts": {
-        "build": "rimraf dist && vite build && tsc --project tsconfig.build.json",
+        "build": "vite build && tsc --project tsconfig.build.json",
         "typecheck": "tsc --noEmit",
         "prepublishOnly": "npm run build && npm run typecheck",
         "lint": "eslint . --ext .ts,.tsx",

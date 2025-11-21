@@ -2,17 +2,16 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "dist/types",
     "emitDeclarationOnly": true,
-    "outDir": "dist/types",
-    "rootDir": "src",    
+    "declarationDir": "dist/types",
+    "rootDir": "src",
     "noEmit": false
   },
-  "include": ["src/**/*"],
+  "include": ["src"],
   "exclude": [
-    "src/__tests__",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "vitest.setup.ts"
+    "**/*.test.*",
+    "**/__tests__/**",
+    "vitest.setup.*"
   ]
 }
+
