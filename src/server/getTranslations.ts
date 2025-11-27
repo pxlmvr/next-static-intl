@@ -1,5 +1,5 @@
 import { Messages } from '../shared/types'
-import { createTServer } from './createTserver'
+import { createTServer } from './createTServer'
 
 export function getTranslations(locale: string, messages: Messages) {
     return createTServer(messages)
