@@ -2,8 +2,8 @@
     "name": "next-static-intl",
     "version": "0.1.0",
     "type": "module",
-    "main": "./dist/next-static-intl.cjs.js",
-    "module": "./dist/next-static-intl.es.js",
+    "main": "./dist/index.cjs.js",
+    "module": "./dist/index.es.js",
     "types": "./dist/types/index.d.ts",
     "description": "Small React i18n library optimized for statically exported Next.js App Router sites",
     "files": [
