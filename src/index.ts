@@ -1,5 +1,4 @@
-export { TranslationProvider } from './TranslationProvider'
-export { useTranslations } from './useTranslations'
-export { createT } from './createT'
-export { getTranslations } from './getTranslations'
-export * from './types'
+export { TranslationProvider } from './client/TranslationProvider'
+export { useTranslations } from './client/useTranslations'
+
+export * from './shared/types'

@@ -1,9 +1,10 @@
 'use client'
 
 import React, { useMemo } from 'react'
+
+import { createTClient } from './createTClient'
+import { Messages } from '../shared/types'
 import { TranslationContext } from './context'
-import { Messages } from './types'
-import { createT } from './createT'
 
 type Props = {
     children: React.ReactNode
@@ -16,7 +17,7 @@ export const TranslationProvider: React.FC<Props> = ({
     messages,
     children,
 }) => {
-    const t = useMemo(() => createT(messages), [messages])
+    const t = useMemo(() => createTClient(messages), [messages])
 
     return (
         <TranslationContext.Provider value={{ locale, messages, t }}>

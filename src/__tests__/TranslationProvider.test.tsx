@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import { TranslationProvider } from '../TranslationProvider'
-import { useTranslations } from '../useTranslations'
+import { useTranslations } from '../client/useTranslations'
+import { TranslationProvider } from '../client/TranslationProvider'
 
 const TestComponent: React.FC = () => {
     const { t } = useTranslations()

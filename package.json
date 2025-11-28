@@ -12,9 +12,13 @@
     "exports": {
         ".": {
             "types": "./dist/types/index.d.ts",
-            "import": "./dist/next-static-intl.es.js",
-            "require": "./dist/next-static-intl.cjs.js",
-            "default": "./dist/next-static-intl.es.js"
+            "import": "./dist/index.es.js",
+            "require": "./dist/index.cjs.js"
+        },
+        "./server": {
+            "types": "./dist/types/index.server.d.ts",
+            "import": "./dist/index.server.es.js",
+            "require": "./dist/index.server.cjs.js"
         }
     },
     "scripts": {
@@ -60,5 +64,8 @@
         "url": "git+https://github.com/pxlmvr/next-static-intl.git"
     },
     "author": "Matteo Losi",
-    "license": "MIT"
+    "license": "MIT",
+    "dependencies": {
+        "vite-plugin-dts": "^4.5.4"
+    }
 }

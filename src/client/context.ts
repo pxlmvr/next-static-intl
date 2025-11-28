@@ -1,11 +1,11 @@
 import React from 'react'
-import { Locale, Messages } from './types'
-import { TFunction } from './createT'
+import { Locale, Messages } from '../shared/types'
+import { TClient } from './createTClient'
 
 export type TranslationContextType = {
     locale: Locale
     messages: Messages
-    t: TFunction
+    t: TClient
 }
 
 export const TranslationContext =
