@@ -4,9 +4,10 @@ A minimal, zero-dependency internationalization helper for React, built specific
 
 - No runtime I/O
 - Fully static-friendly
+- Available in both server and client components
 - Supports nested keys
 - Supports parameter interpolation
-- Supports rich text (HTML-like) interpolation
+- Supports rich text (HTML-like) interpolation (client-only for the time being)
 - Tiny bundle footprint
 - Framework-agnostic — works in any React setup
 
@@ -73,13 +74,28 @@ export default function LocaleLayout({ children, params }) {
 
 ```
 
-### Using translations inside components
+### Using translations inside client components
 
 ```tsx
+'use client'
+
 import { useTranslations } from 'next-static-intl';
 
 export default function Home() {
   const { t } = useTranslations();
+  return <h1>{t('home.title', { name: 'Alice' })}</h1>;
+}
+
+```
+
+### Using translations inside server components
+
+```tsx
+
+import { getTranslations } from 'next-static-intl/server';
+
+export default function Home() {
+  const { t } = getTranslations();
   return <h1>{t('home.title', { name: 'Alice' })}</h1>;
 }
 
@@ -153,6 +169,19 @@ const { t, locale, messages } = useTranslations();
 `t.rich(key, renderers)`:
 - Parses HTML-like tags: `<bold>text</bold>`
 - Calls renderers to turn chunks into components
+
+### `getTranslations()`
+
+Returns `{ t, locale, messages }`.
+
+```ts
+const { t } = getTranslations();
+```
+
+`t(key, params?)`
+- Resolves nested keys: `home.title`, `auth.errors.invalid`
+- Supports simple placeholders: `{name}`
+
 
 ## Message format limitations
 
