@@ -16,6 +16,7 @@ A minimal, zero-dependency internationalization helper for React, built specific
 ```bash
 npm install next-static-intl
 ```
+
 # or
 
 ```bash
@@ -25,7 +26,7 @@ yarn add next-static-intl
 ## Project structure example
 
 ```
-locales/
+messages/
   en.ts
   it.ts
 app/
@@ -39,10 +40,10 @@ components/
 Message files can contain nested messages:
 
 ```
-{
-  "home": {
-    "title": "Welcome, {name}!",
-    "richExample": "Click <bold>here</bold> to continue"
+export const messages = {
+  home: {
+    title: "Welcome, {name}!",
+    richExample: "Click <bold>here</bold> to continue"
   }
 }
 
@@ -53,25 +54,40 @@ Message files can contain nested messages:
 ### app/[locale]/layout.tsx
 
 ```tsx
-import { TranslationProvider } from 'next-static-intl';
-import en from '../../locales/en.ts';
-import it from '../../locales/it.ts';
+'use client'
 
-export const generateStaticParams = () => [
-  { locale: 'en' },
-  { locale: 'it' }
-];
+import { TranslationProvider } from 'next-static-intl'
+import en from '../../locales/en.ts'
+import it from '../../locales/it.ts'
+
+export const generateStaticParams = () => [{ locale: 'en' }, { locale: 'it' }]
 
 export default function LocaleLayout({ children, params }) {
-  const messages = params.locale === 'en' ? en : it;
+    const messages = params.locale === 'en' ? en : it
 
-  return (
-    <TranslationProvider locale={params.locale} messages={messages}>
-      {children}
-    </TranslationProvider>
-  );
+    return (
+        <TranslationProvider locale={params.locale} messages={messages}>
+            {children}
+        </TranslationProvider>
+    )
 }
+```
 
+or **create a dedicated client-side wrapper component** for `<TranslationProvider />` to avoid making the layout component client-side:
+
+```tsx
+// components/LocaleProvider.tsx
+'use client'
+
+import { TranslationProvider } from 'next-static-intl'
+
+export default function LocaleProvider({ children, locale, messages }) {
+    return (
+        <TranslationProvider locale={locale} messages={messages}>
+            {children}
+        </TranslationProvider>
+    )
+}
 ```
 
 ### Using translations inside client components
@@ -79,26 +95,24 @@ export default function LocaleLayout({ children, params }) {
 ```tsx
 'use client'
 
-import { useTranslations } from 'next-static-intl';
+import { useTranslations } from 'next-static-intl'
 
 export default function Home() {
-  const { t } = useTranslations();
-  return <h1>{t('home.title', { name: 'Alice' })}</h1>;
+    const { t } = useTranslations()
+    return <h1>{t('home.title', { name: 'Alice' })}</h1>
 }
-
 ```
 
 ### Using translations inside server components
 
 ```tsx
-
-import { getTranslations } from 'next-static-intl/server';
+import { getTranslations } from 'next-static-intl/server'
+import { messages } from '../messages/en'
 
 export default function Home() {
-  const { t } = getTranslations();
-  return <h1>{t('home.title', { name: 'Alice' })}</h1>;
+    const t = getTranslations(messages)
+    return <h1>{t('home.title', { name: 'Alice' })}</h1>
 }
-
 ```
 
 ## Interpolation
@@ -108,16 +122,15 @@ export default function Home() {
 Messages:
 
 ```tsx
-{
-  greeting: "Hello, {name}! Today is {day}."
+messages = {
+    greeting: 'Hello, {name}! Today is {day}.',
 }
-
 ```
 
 Component:
 
 ```tsx
-t('greeting', { name: 'Alice', day: 'Monday' });
+t('greeting', { name: 'Alice', day: 'Monday' })
 // → "Hello, Alice! Today is Monday."
 ```
 
@@ -128,19 +141,17 @@ Use the `t.rich` method to embed React components.
 Messages:
 
 ```tsx
-{
-  info: "Click <bold>here</bold> to continue"
+messages = {
+    info: 'Click <bold>here</bold> to continue',
 }
-
 ```
 
 Component:
 
 ```tsx
 t.rich('info', {
-  bold: (chunks) => <strong>{chunks}</strong>
-});
-
+    bold: (chunks) => <strong>{chunks}</strong>,
+})
 ```
 
 You can support any tag name (`<em>`, `<link>`, `<red>`, `<foo>`, …).
@@ -149,39 +160,41 @@ You can support any tag name (`<em>`, `<link>`, `<red>`, `<foo>`, …).
 
 ### `<TranslationProvider />`
 
-| Prop       | Type                  | Description                  |
-| ---------- | --------------------- | ---------------------------- |
-| `locale`   | `string`              | Active locale code           |
-| `messages` | `Record<string, any>` | The loaded translations      |
+| Prop       | Type                  | Description             |
+| ---------- | --------------------- | ----------------------- |
+| `locale`   | `string`              | Active locale code      |
+| `messages` | `Record<string, any>` | The loaded translations |
 
 ### `useTranslations()`
 
 Returns `{ t, locale, messages }`.
 
 ```ts
-const { t, locale, messages } = useTranslations();
+const { t, locale, messages } = useTranslations()
 ```
 
 `t(key, params?)`
+
 - Resolves nested keys: `home.title`, `auth.errors.invalid`
 - Supports simple placeholders: `{name}`
 
 `t.rich(key, renderers)`:
+
 - Parses HTML-like tags: `<bold>text</bold>`
 - Calls renderers to turn chunks into components
 
 ### `getTranslations()`
 
-Returns `{ t, locale, messages }`.
+Returns `t`.
 
 ```ts
-const { t } = getTranslations();
+const t = getTranslations()
 ```
 
 `t(key, params?)`
+
 - Resolves nested keys: `home.title`, `auth.errors.invalid`
 - Supports simple placeholders: `{name}`
-
 
 ## Message format limitations
 
@@ -192,7 +205,7 @@ const { t } = getTranslations();
 Example of unsupported case:
 
 ```ts
-bad: "Hello <bold>very <italic>nested</italic></bold> world"
+bad: 'Hello <bold>very <italic>nested</italic></bold> world'
 ```
 
 ## Why this library?
